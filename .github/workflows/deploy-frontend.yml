@@ -3,34 +3,28 @@ name: Deploy Frontend to Vercel
 on:
   push:
     branches:
-      - main # Roda o pipeline quando há push na branch main
+      - main  # Ou qualquer outra branch que você esteja usando
 
 jobs:
   deploy:
-    name: Deploy Frontend
     runs-on: ubuntu-latest
 
     steps:
-      # Passo 1: Checkout do código
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Passo 2: Configurar Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 20 
+          node-version: '18'
 
-      # Passo 3: Instalar dependências
       - name: Install dependencies
         run: npm ci
 
-      # Passo 4: Build do projeto
-      - name: Build project
+      - name: Build the project
         run: npm run build
 
-      # Passo 5: Deploy para a Vercel
       - name: Deploy to Vercel
         env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }} # Token armazenado nos Secrets do repositório
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}  # Certifique-se que o token está aqui
         run: npx vercel --prod --yes
