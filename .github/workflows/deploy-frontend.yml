@@ -26,5 +26,7 @@ jobs:
 
       - name: Deploy to Vercel
         env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}  # Certifique-se que o token está aqui
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}  # felipe-mouras-projects-98223b3a
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}  # gocase-front
         run: npx vercel --prod --yes
