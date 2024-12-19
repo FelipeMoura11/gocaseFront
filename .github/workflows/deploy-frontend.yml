@@ -1,4 +1,3 @@
-# .github/workflows/deploy-frontend.yml
 name: Deploy Frontend to Vercel
 
 on:
@@ -20,7 +19,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18 # Certifique-se de usar a versão do Node que seu projeto precisa
+          node-version: 20 
 
       # Passo 3: Instalar dependências
       - name: Install dependencies

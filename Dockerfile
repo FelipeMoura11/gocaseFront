@@ -1,13 +1,13 @@
-# Use uma imagem base do Node.js
+# Usa uma imagem base do Node.js
 FROM node:20-alpine AS builder 
 
-# Crie o diretório de trabalho
+# Cria o diretório de trabalho
 WORKDIR /
 
-# Copie os arquivos de dependência
+# Copia os arquivos de dependência
 COPY package*.json .
 
-# Instale as dependências
+# Instala as dependências
 RUN npm i 
 
 COPY src src  
