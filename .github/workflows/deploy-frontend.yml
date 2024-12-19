@@ -25,4 +25,4 @@ jobs:
         run: npm run build  # Executa o build do projeto React
 
       - name: Deploy to Vercel
-        run: npx vercel --prod --yes  # Deploy para o ambiente de produção da Vercel
+        run: npx vercel --prod --yes  #  Deploy para o ambiente de produção da Vercel
