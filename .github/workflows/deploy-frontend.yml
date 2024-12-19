@@ -1,35 +1,28 @@
-name: Deploy to Vercel
+name: Deploy Frontend to Vercel
 
 on:
   push:
     branches:
-      - main # Altere para o nome da branch desejada, se necessário
+      - main  # Ou qualquer outra branch que você deseje monitorar
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Passo 1: Fazer checkout do código
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Passo 2: Configurar o Node.js
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18 # Use a versão necessária para o seu projeto
+          node-version: '18'  # Ou a versão do Node.js que você estiver usando
 
-      # Passo 3: Instalar dependências
       - name: Install dependencies
-        run: npm ci
+        run: npm ci  # Instala as dependências usando o npm ci
 
-      # Passo 4: Build do projeto
-      - name: Build project
-        run: npm run build
+      - name: Build the project
+        run: npm run build  # Executa o build do projeto React
 
-      # Passo 5: Deploy para o Vercel
       - name: Deploy to Vercel
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-        run: npx vercel --prod --yes
+        run: npx vercel --prod --yes  # Deploy para o ambiente de produção da Vercel
