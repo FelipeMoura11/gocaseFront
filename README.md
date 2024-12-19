@@ -2,90 +2,75 @@
 
 Este repositório contém um projeto frontend construído com React. Este guia explica como configurar um workflow do GitHub Actions para realizar o deploy automático do seu projeto no Vercel sempre que houver alterações na branch `main`.
 
-## Pré-requisitos
+---
+
+## **Pré-requisitos**
 
 Antes de configurar o workflow, certifique-se de que você possui:
 
 1. **Conta no Vercel**: Você precisa de uma conta no [Vercel](https://vercel.com/).
-2. **Token de Acesso Pessoal**: Gere um token no painel do Vercel para autenticar os deployments.
-3. **Repositório no GitHub**: O projeto deve estar em um repositório do GitHub.
-4. **Configuração da Branch**: Certifique-se de que sua branch padrão se chama `main` (ou atualize o arquivo de workflow se usar outro nome).
+2. **Repositório no GitHub**: O projeto deve estar em um repositório do GitHub.
+3. **Configuração da Branch**: Certifique-se de que sua branch padrão se chama `main` (ou ajuste o arquivo de workflow se usar outro nome).
 
-## Passos para Configurar o Workflow
+---
 
-### 1. Gerar um Token no Vercel
+## **Configuração do Workflow**
 
-1. Acesse seu [Painel do Vercel](https://vercel.com/dashboard).
-2. Vá para **Settings** > **Tokens**.
-3. Clique em **Create Token** e copie o token gerado.
+Vamos criar o workflow para deploy de produção no Vercel.
 
-### 2. Adicionar o Token aos Segredos do GitHub
+### **1. Criar o Arquivo do Workflow**
 
-1. Acesse seu repositório no GitHub.
-2. Vá para **Settings** > **Secrets and variables** > **Actions**.
-3. Clique em **New repository secret**.
-4. Adicione um novo segredo com as seguintes informações:
-   - **Name**: `VERCEL_TOKEN`
-   - **Value**: Cole o token do Vercel copiado anteriormente.
-
-### 3. Criar o Arquivo de Workflow
-
-1. No seu repositório, navegue até a pasta `.github/workflows/`.
-2. Crie um arquivo chamado `deploy-frontend.yml`.
-3. Adicione o seguinte conteúdo ao arquivo:
+1. Navegue até a pasta `.github/workflows/` no seu repositório.
+2. Crie um arquivo chamado `production.yaml`.
+3. Adicione o seguinte conteúdo:
 
 ```yaml
-name: Deploy Frontend to Vercel
-
+name: Vercel Production Deployment
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 on:
   push:
     branches:
       - main
-
 jobs:
-  deploy:
-    name: Deploy Frontend
+  Deploy-Production:
     runs-on: ubuntu-latest
-
     steps:
-      # Passo 1: Baixar o código do repositório
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v2
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Build Project Artifacts
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Deploy Project Artifacts to Vercel
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+2. Configurar Segredos no GitHub
+Adicione os valores necessários do Vercel como segredos no GitHub:
 
-      # Passo 2: Configurar o Node.js
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18 # Use a versão do Node.js requerida pelo seu projeto
+Recuperar o Token de Acesso do Vercel:
 
-      # Passo 3: Instalar dependências
-      - name: Install dependencies
-        run: npm ci
+Instale o Vercel CLI e faça login com o comando vercel login.
+Dentro da sua pasta do projeto, execute vercel link para criar ou vincular um projeto existente no Vercel.
+Localize os valores projectId e orgId no arquivo .vercel/project.json.
+Adicionar Segredos no GitHub:
 
-      # Passo 4: Build do projeto
-      - name: Build project
-        run: npm run build
-
-      # Passo 5: Deploy no Vercel
-      - name: Deploy to Vercel
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-        run: npx vercel --prod
-```
-
-### 4. Testar o Workflow
-
-1. Faça o commit e o push do arquivo `deploy-frontend.yml` para a branch `main`.
-2. Faça qualquer alteração e realize o push na branch `main`. Verifique a aba **Actions** no seu repositório para monitorar o processo de deployment.
-
-### 5. Verificar o Deploy
-
-1. Acesse o painel do Vercel.
-2. Verifique se o deployment mais recente foi bem-sucedido.
-3. Acesse a URL de deployment para confirmar que o frontend está no ar.
-
-## Notas
-
-- A versão do `node-version` no arquivo de workflow deve corresponder à versão necessária para o seu projeto.
-- Certifique-se de que o `package.json` possui o script de build correto (por exemplo, `react-scripts build` para projetos criados com Create React App).
-- Caso utilize variáveis de ambiente no frontend, configure-as nas configurações do projeto no Vercel.
+No GitHub, acesse Settings do seu repositório.
+Vá para Secrets and variables > Actions.
+Adicione os seguintes segredos:
+VERCEL_TOKEN: O token de acesso gerado no Vercel.
+VERCEL_ORG_ID: O valor orgId do arquivo .vercel/project.json.
+VERCEL_PROJECT_ID: O valor projectId do arquivo .vercel/project.json.
+Testar o Workflow
+Faça o commit e o push do arquivo production.yaml para a branch main.
+Realize qualquer alteração no código e faça o push na branch main.
+Verifique a aba Actions no repositório para monitorar o progresso do workflow.
+Verificar o Deploy
+Acesse o painel do Vercel.
+Confira se o deployment mais recente foi bem-sucedido.
+Acesse a URL do deployment para garantir que o frontend está funcionando corretamente.
+Notas
+Certifique-se de que a versão do Node.js configurada no workflow (node-version) é compatível com o seu projeto.
+Verifique se o package.json contém o script correto de build, como react-scripts build para projetos criados com Create React App.
+Caso utilize variáveis de ambiente no frontend, configure-as diretamente no painel do Vercel nas configurações do projeto.
