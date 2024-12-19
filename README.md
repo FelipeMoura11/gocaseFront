@@ -46,6 +46,7 @@ jobs:
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
       - name: Deploy Project Artifacts to Vercel
         run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+```
 2. Configurar Segredos no GitHub
 Adicione os valores necessários do Vercel como segredos no GitHub:
 
