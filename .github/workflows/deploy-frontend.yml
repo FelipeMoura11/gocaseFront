@@ -26,5 +26,5 @@ jobs:
 
       - name: Deploy to Vercel
         env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}  # Usando o token armazenado nos Secrets
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}  #Usando o token armazenado nos Secrets
         run: npx vercel --prod --yes
