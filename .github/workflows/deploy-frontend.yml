@@ -3,7 +3,7 @@ name: Deploy Frontend to Vercel
 on:
   push:
     branches:
-      - main  # Ou qualquer outra branch que você deseje monitorar
+      - main
 
 jobs:
   deploy:
@@ -16,13 +16,15 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'  # Ou a versão do Node.js que você estiver usando
+          node-version: '18'
 
       - name: Install dependencies
-        run: npm ci  # Instala as dependências usando o npm ci
+        run: npm ci
 
       - name: Build the project
-        run: npm run build  # Executa o build do projeto React
+        run: npm run build
 
       - name: Deploy to Vercel
-        run: npx vercel --prod --yes  #  Deploy para o ambiente de produção da Vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}  # Usando o token armazenado nos Secrets
+        run: npx vercel --prod --yes
