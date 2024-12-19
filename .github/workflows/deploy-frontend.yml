@@ -33,4 +33,4 @@ jobs:
       - name: Deploy to Vercel
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }} # Token armazenado nos Secrets do repositório
-        run: npx vercel --prod
+        run: npx vercel --prod --yes
