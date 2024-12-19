@@ -32,5 +32,5 @@ jobs:
       # Passo 5: Deploy para a Vercel
       - name: Deploy to Vercel
         env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }} # Token armazenado nos Secrets do repositório
+          VERCEL_TOKEN: ${{ secrets.VECEL_TOKEN }} # Token armazenado nos Secrets do repositório
         run: npx vercel --prod --yes
